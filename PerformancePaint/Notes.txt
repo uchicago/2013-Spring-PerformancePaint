@@ -1,0 +1,9 @@
+ 
+    if (self.imageMask) {
+        CALayer *mask = [CALayer layer];
+        mask.contents = (id)[[UIImage imageNamed:@"mask2"] CGImage];
+        mask.frame = self.frame;
+        self.layer.mask = mask;
+        self.layer.masksToBounds = YES;
+        mask.backgroundColor = [UIColor grayColor].CGColor;
+    }

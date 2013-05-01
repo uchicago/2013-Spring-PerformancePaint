@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PaintView.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <PaintViewDelegate>
+
+- (void)paintView:(PaintView*)paintView finishedTrackingPath:(CGPathRef)path inRect:(CGRect)painted;
 
 @end

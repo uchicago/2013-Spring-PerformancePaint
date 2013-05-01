@@ -18,6 +18,8 @@
 		37E1F9531730DACB00DFB912 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37E1F9521730DACB00DFB912 /* Default-568h@2x.png */; };
 		37E1F9561730DACB00DFB912 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37E1F9541730DACB00DFB912 /* MainStoryboard.storyboard */; };
 		37E1F9591730DACB00DFB912 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E1F9581730DACB00DFB912 /* ViewController.m */; };
+		37E1F9611730DB0400DFB912 /* PaintView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E1F9601730DB0400DFB912 /* PaintView.m */; };
+		37E1F9631730E7FC00DFB912 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 37E1F9621730E7FC00DFB912 /* Notes.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,9 @@
 		37E1F9551730DACB00DFB912 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		37E1F9571730DACB00DFB912 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		37E1F9581730DACB00DFB912 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		37E1F95F1730DB0400DFB912 /* PaintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintView.h; sourceTree = "<group>"; };
+		37E1F9601730DB0400DFB912 /* PaintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintView.m; sourceTree = "<group>"; };
+		37E1F9621730E7FC00DFB912 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +93,9 @@
 				37E1F9541730DACB00DFB912 /* MainStoryboard.storyboard */,
 				37E1F9571730DACB00DFB912 /* ViewController.h */,
 				37E1F9581730DACB00DFB912 /* ViewController.m */,
+				37E1F95F1730DB0400DFB912 /* PaintView.h */,
+				37E1F9601730DB0400DFB912 /* PaintView.m */,
+				37E1F9621730E7FC00DFB912 /* Notes.txt */,
 				37E1F9431730DACB00DFB912 /* Supporting Files */,
 			);
 			path = PerformancePaint;
@@ -163,6 +171,7 @@
 				37E1F9511730DACB00DFB912 /* Default@2x.png in Resources */,
 				37E1F9531730DACB00DFB912 /* Default-568h@2x.png in Resources */,
 				37E1F9561730DACB00DFB912 /* MainStoryboard.storyboard in Resources */,
+				37E1F9631730E7FC00DFB912 /* Notes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +185,7 @@
 				37E1F9491730DACB00DFB912 /* main.m in Sources */,
 				37E1F94D1730DACB00DFB912 /* AppDelegate.m in Sources */,
 				37E1F9591730DACB00DFB912 /* ViewController.m in Sources */,
+				37E1F9611730DB0400DFB912 /* PaintView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +275,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PerformancePaint/PerformancePaint-Prefix.pch";
 				INFOPLIST_FILE = "PerformancePaint/PerformancePaint-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -276,6 +287,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PerformancePaint/PerformancePaint-Prefix.pch";
 				INFOPLIST_FILE = "PerformancePaint/PerformancePaint-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
