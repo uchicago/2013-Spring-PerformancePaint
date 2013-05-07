@@ -10,47 +10,57 @@
 #import "ViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define BEZIER_TYPE 1
+//#define BEZIER_TYPE 0
 
 @interface PaintView ()
+////////////////////////////////////////////////////////////////////////////////
 @property CGMutablePathRef trackingPath;
 
+// CG
 @property (strong, nonatomic) NSMutableArray *strokes;
-@property (strong, nonatomic) UIBezierPath *path;
-
 @property CGRect trackingDirty;
-@property CGSize shadowSize;
+@property CGSize  shadowSize;
 @property CGFloat shadowBlur;
 @property CGFloat lineWidth;
-
 @property (strong, nonatomic) NSMutableArray *previousPaths;
 @property (strong, nonatomic) NSMutableArray *previousColors;
+
+// Bezier
+@property (strong, nonatomic) UIBezierPath *path;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 @implementation PaintView
 
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        [self setupDefaultPaintStyles];
+
+        // Setup the painting style
+        self.lineWidth = 15;
+        self.lineColor = [UIColor greenColor];
+        self.shadowSize = (CGSize) {10,10},
+        self.shadowBlur = 5;
+        
+        
+        // Make the background clear so we can see previous strokes
         self.backgroundColor = [UIColor clearColor];
+        _previousPaths = [[NSMutableArray alloc] initWithCapacity:10];
         _strokes = [[NSMutableArray alloc] initWithCapacity:10];
     }
 
     return self;
 }
 
-- (void)setupDefaultPaintStyles
-{
-    self.lineWidth = 20;
-    self.lineColor = [UIColor greenColor];
-    self.shadowSize = (CGSize) {10,10},
-    self.shadowBlur = 5;
-}
-
+#pragma mark - Touch Handling Code
+/*******************************************************************************
+ * @method          touchesBegan
+ * @abstract        <# abstract #>
+ * @description     <# description #>
+ *******************************************************************************/
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     
@@ -61,6 +71,8 @@
     CGPathMoveToPoint(_trackingPath, NULL, point.x, point.y);
     
     
+#ifdef BEZIER_TYPE
+    /*
     ////////////////////////////////////////////////////////////////////////////
     // BezierPath
     UITouch *touch = [touches anyObject];
@@ -73,62 +85,95 @@
     
     // Create the arrays to hold the values
     [self.strokes addObject:self.path];
-
+*/
+#endif
 }
 
+/*******************************************************************************
+ * @method          touchesMoved:withEvent:
+ * @abstract
+ * @description         
+ *******************************************************************************/
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
     // Add the new path to the point
     CGPoint prevPoint = CGPathGetCurrentPoint(_trackingPath);
     CGPoint point = [[touches anyObject] locationInView:self];
     CGPathAddLineToPoint(_trackingPath, NULL, point.x, point.y);
     
     CGRect dirty = [self segmentBoundsFrom:prevPoint to:point];
-    
-    //[self setNeedsDisplay];
-    //[self setNeedsDisplayInRect:dirty];
-    
-    
+
+#ifdef OPTIMIZATION0
+    [self setNeedsDisplay];
+#endif
+
+#ifdef OPTIMIZATION1
+    [self setNeedsDisplayInRect:dirty];
+
+    #ifdef OPTIMIZATION2
     // Keep track of the cumulative "dirty" rectangle
     _trackingDirty = CGRectUnion(dirty, _trackingDirty);
-   
+    #endif
+#endif
     
-    UITouch *touch = [touches anyObject];
+#ifdef BEZIER_TYPE
+    /*
+     UITouch *touch = [touches anyObject];
     [[self.strokes lastObject] addLineToPoint:[touch locationInView:self]];
     //[self setNeedsDisplay];
     [self setNeedsDisplayInRect:dirty];
+     */
+#endif
+
 }
 
+/*******************************************************************************
+ * @method          touchesEnded:withEvent
+ * @abstract
+ * @description         
+ *******************************************************************************/
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-
-     [_previousPaths addObject:(__bridge id)_trackingPath];
+    [_previousPaths addObject:(__bridge id)_trackingPath];
     [_previousColors addObject:self.lineColor];
     CGPathRelease(_trackingPath);
     _trackingPath = NULL;
-
-    [self.delegate paintView:self finishedTrackingPath:_trackingPath inRect:_trackingDirty];
-
     
-    //
+#ifdef OPTIMIZATION1
+    [self setNeedsDisplay];
+#endif
+
+#ifdef OPTIMIZATION2
+    [self.delegate paintView:self finishedTrackingPath:_trackingPath inRect:_trackingDirty];
+#endif
+    
+    
+#ifdef BEZIER_TYPE
+    /*
 	UITouch *touch = [touches anyObject];
     // Update the last one
     [[self.strokes lastObject] addLineToPoint:[touch locationInView:self]];
     [self setNeedsDisplay];
     //[self setNeedsDisplayInRect:CGRectUnion(self.firstTouch,self.lastTouch)];
-    
     [self.delegate paintView:self finishedTrackingPath:_trackingPath inRect:_trackingDirty];
+     */
+#endif
 }
 
+/*******************************************************************************
+ * @method          drawRect:
+ * @abstract
+ * @description      
+ *******************************************************************************/
+float totalTimeInDrawRect=0.0;
+int numberOfDrawRectCalls=0;
 
- - (void)drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
  {
      CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
      
-     /*
-       CGContextRef context = UIGraphicsGetCurrentContext();
-     CGContextSaveGState(context);
+     CGContextRef context = UIGraphicsGetCurrentContext();
+     CGContextSaveGState(context);  
      NSLog(@"rect:%f %f",rect.size.width,rect.size.height);
      
      [_previousPaths enumerateObjectsUsingBlock:^(id obj,NSUInteger idx, BOOL *stop) {
@@ -145,17 +190,23 @@
      
      CGContextRestoreGState(context);
      
-      */
-     
-     //
+    
+#ifdef BEZIER_TYPE
+     /*
      for (int i=0; i < [self.strokes count]; i++) {
          //for (UIBezierPath *tmp in self.strokes)
          UIBezierPath *tmp = (UIBezierPath*)[self.strokes objectAtIndex:i];
          [[UIColor redColor] set];
          [tmp stroke];
      }
-     NSLog(@"%2.2fms", 1000.0*(CFAbsoluteTimeGetCurrent() - startTime));
+      */
+#endif
      
+     // Time profiling
+     CFAbsoluteTime runTime = 1000.0*(CFAbsoluteTimeGetCurrent() - startTime);
+     numberOfDrawRectCalls++;
+     totalTimeInDrawRect+= runTime;
+     NSLog(@">>> %2.2fms      Average: %2.2f", runTime,totalTimeInDrawRect/numberOfDrawRectCalls);
  }
 
 
@@ -167,7 +218,7 @@
 - (void)setPaintStyleInContext:(CGContextRef)context withColor:(UIColor*)color
 {
 
-    //CGContextSetShadowWithColor(context, self.shadowSize, self.shadowBlur, [color CGColor]);
+    CGContextSetShadowWithColor(context, self.shadowSize, self.shadowBlur, [color CGColor]);
     CGContextSetStrokeColorWithColor(context, color.CGColor);
     CGContextSetLineWidth(context, self.lineWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
@@ -175,8 +226,12 @@
     //}
 }
 
+/*******************************************************************************
+ * @method          erase
+ * @abstract
+ * @description
+ *******************************************************************************/
 - (void)erase {
-    //[self imageRepresentation];
     [_previousPaths removeAllObjects];
     [_previousColors removeAllObjects];
 
@@ -185,78 +240,26 @@
         _trackingPath = NULL;
         _trackingDirty = CGRectNull;
     }
-    //[self setNeedsDisplay];
 
     // Bezier Path 
-    // Remove all the strokes and clear the arrays
+    /*(
+     // Remove all the strokes and clear the arrays
     [self.path removeAllPoints];
     [self.strokes removeAllObjects];
-
+     */
+    
     [self setNeedsDisplay];
 }
 
+/*******************************************************************************
+ * @method          segmentBoundsFrom:to
+ * @abstract        Get a rect from the start and end points of a touch
+ * @description     Include a buffer of 10
+ *******************************************************************************/
 - (CGRect)segmentBoundsFrom:(CGPoint)point1 to:(CGPoint)point2
 {
-    CGRect dirtyPoint1 = CGRectMake(point1.x-10, point1.y-10, 20, 20);
-    CGRect dirtyPoint2 = CGRectMake(point2.x-10, point2.y-10, 20, 20);
+    CGRect dirtyPoint1 = CGRectMake(point1.x-10, point1.y-10, 50, 50);
+    CGRect dirtyPoint2 = CGRectMake(point2.x-10, point2.y-10, 50, 50);
     return CGRectUnion(dirtyPoint1, dirtyPoint2);
 }
-
-/*******************************************************************************
- * @method      imageRepresentation
- * @abstract    Take a screenshot
- * @description
- *******************************************************************************/
-/*- (UIImage *)imageRepresentation:(NSString*)theFilePath transparent:(BOOL)makeTranparent saveToLibrary:(BOOL)saveToLibrary
-{
-    
-    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    
-    //background processing goes here
-    NSError *error;
-    UIView *original = [[UIView alloc] init];
-    if (makeTranparent) {
-        original.backgroundColor = self.backgroundColor;
-        original.layer.shadowOpacity = self.layer.shadowOpacity;
-        self.backgroundColor = [UIColor clearColor];
-        self.layer.shadowOpacity = 0;
-    }
-    
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, [UIScreen mainScreen].scale);
-    else
-        UIGraphicsBeginImageContext(self.bounds.size);
-    
-    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    NSData *data = UIImagePNGRepresentation(image);
-    
-    // if save to album
-    if (saveToLibrary)
-        UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:data], nil, nil, nil);
-    
-    if (theFilePath != nil) {
-        //fileName = [NSString stringWithFormat:@"%@_%@.png",[self class],[NSNumber numberWithBool:makeTranparent]];
-        [data writeToFile:theFilePath options:NSDataWritingAtomic error:&error];
-        if (error)
-            DLog(@">>>>>>>>>>>>>>>>>>>>\n ERROR: %@", [error localizedDescription]);
-    }
-    
-    //
-    if (makeTranparent) {
-        self.backgroundColor = original.backgroundColor;
-        self.layer.shadowOpacity =  original.layer.shadowOpacity;
-    }
- 
-     
-     dispatch_async(dispatch_get_main_queue(), ^{
-     NSLog(@"\n>>>>> Done saving in background...");//update UI here
-     });
-     });
-     
-    return nil;//image;
-}
-*/
-
 @end

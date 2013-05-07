@@ -12,3 +12,10 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+
+//#define OPTIMIZATION0
+#define OPTIMIZATION1
+#define OPTIMIZATION2
+
+#define FEATURE_SCREENSHOT
