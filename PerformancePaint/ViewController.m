@@ -26,10 +26,15 @@
     [super viewDidLoad];
     
           
-    //[self playVideo:@"NxeT_GDKv9g" frame:CGRectMake(5, 20, 200,200)];
+    [self playVideo:@"NxeT_GDKv9g" frame:CGRectMake(5, 20, 200,200)];
     _localImageCache = [[NSMutableArray alloc] init];
 }
 
+/*******************************************************************************
+ * @method          viewDidAppear
+ * @abstract
+ * @description
+ *******************************************************************************/
 - (void)viewDidAppear:(BOOL)animated
 {
     // Create a background view to add image to
@@ -147,7 +152,7 @@
 }
 
 #pragma mark - Video
-/*
+
  - (void)playVideo:(NSString *)urlString frame:(CGRect)frame
  {
  
@@ -183,6 +188,5 @@
  {
  NSLog(@"Player ended");
  }
- */
 
 @end

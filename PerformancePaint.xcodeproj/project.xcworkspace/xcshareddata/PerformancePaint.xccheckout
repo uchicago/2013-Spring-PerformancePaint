@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>CC09C47C-884D-45B5-94F8-CC98283E980D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PerformancePaint</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>122260D9-A582-4292-AED7-CF4089CFACEF</key>
+		<string>ssh://github.com/uchicago/Spring2013-PerformancePaint.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>PerformancePaint.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>122260D9-A582-4292-AED7-CF4089CFACEF</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/uchicago/Spring2013-PerformancePaint.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>122260D9-A582-4292-AED7-CF4089CFACEF</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>122260D9-A582-4292-AED7-CF4089CFACEF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PerformancePaint</string>
+		</dict>
+	</array>
+</dict>
+</plist>
